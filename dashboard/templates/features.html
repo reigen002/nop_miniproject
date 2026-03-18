@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APG-DST Analytics Dashboard</title>
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --border: #2a2a4a;
+            --accent-green: #00e676;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --text-bright: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        nav {
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            color: var(--text-bright);
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 0.7rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">APG-DST Analytics Dashboard</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/convergence">Convergence</a>
+                <a href="/features" class="active">Features</a>
+                <a href="/comparison">Comparison</a>
+                <a href="/predict">Predict</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Feature Selection Analysis</h1>
+        <p class="subtitle">Comparing feature importance and sparsity across Ridge, LASSO, and APG-DST</p>
+
+        <div class="card">
+            <h3>Feature Importance Comparison</h3>
+            <p>Top features selected by each model ranked by absolute coefficient magnitude.</p>
+            <img src="/plots/feature_importance.png" alt="Feature Importance"
+                onerror="this.parentElement.innerHTML+='<p style=color:#ffab40>Plot not found. Run main.py first.</p>'">
+        </div>
+
+        <div class="card">
+            <h3>Coefficient Distribution</h3>
+            <p>Full coefficient profile showing how many features are pruned to zero by each method.</p>
+            <img src="/plots/coefficient_comparison.png" alt="Coefficient Comparison"
+                onerror="this.parentElement.innerHTML+='<p style=color:#ffab40>Plot not found.</p>'">
+        </div>
+
+        {% if eval_report %}
+        <div class="card">
+            <h3>Top Selected Features by APG-DST</h3>
+            {% if eval_report.get('APG-DST') and eval_report['APG-DST'].get('top_features') %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Feature</th>
+                        <th>Coefficient</th>
+                        <th>|Value|</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feat in eval_report['APG-DST']['top_features'] %}
+                    <tr>
+                        <td>{{ feat.rank }}</td>
+                        <td>{{ feat.name }}</td>
+                        <td>{{ "%.4f"|format(feat.coefficient) }}</td>
+                        <td>{{ "%.4f"|format(feat.abs_coefficient) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        {% endif %}
+        <footer style="margin-top: auto; font-size:0.8em;text-align: center;">
+            Jain (Deemed-to-be University) | CSE-AI&DE | Numerical Optimization Mini Project
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+﻿
+==================================================================
+  NOP MINI PROJECT - THEME 3
+  Dynamic Soft-Thresholding for Feature Selection
+  in High-Dimensional Regression
+  Jain (Deemed-to-be University) | CSE-AI&ML
+==================================================================
+
+Configuration:
+  Polynomial degree:  2
+  Base lambda_0:     0.02
+  Adaptive gamma:    0.5
+  Max iterations:    30
+  Results directory:  results
+======================================================================
+LOADING DATASET
+======================================================================
+[Dataset] Original features: 8
+[Dataset] After degree-2 expansion: 44 features
+[Dataset] Samples: 20640
+[Dataset] Train: 13416, Val: 3096, Test: 4128
+
+======================================================================
+RIDGE REGRESSION
+======================================================================
+[Ridge] Training with cross-validated alpha selection...
+[Ridge] Best alpha: 19.306977
+[Ridge] Train MSE: 0.4488, Val MSE: 18.3952, Test MSE: 0.5555
+[Ridge] Sparsity: 0.0% zero coefficients
+[Ridge] Training time: 0.335s
+
+======================================================================
+STANDARD LASSO
+======================================================================
+[LASSO] Training with cross-validated alpha selection...
+[LASSO] Best alpha: 0.028118
+[LASSO] Train MSE: 0.5438, Val MSE: 0.5800, Test MSE: 0.5706
+[LASSO] Sparsity: 77.3% zero coefficients
+[LASSO] Training time: 8.318s
+
+======================================================================
+ADAPTIVE PROXIMAL GRADIENT (APG-DST)
+======================================================================
+
+======================================================================
+                 APG-DST: Adaptive Proximal Gradient                  
+======================================================================
+  Outer iters: 30, CD passes: 200
+  Phase 1 (fixed): 9, Phase 2 (adaptive): 21
+----------------------------------------------------------------------
+ Iter |    Objective |        MSE | Nonzero/44 | Sparsity |   Lam_mean
+----------------------------------------------------------------------
+    0W |     0.309528 |   0.530371 |      13/44 |    70.5% |   0.020000
+    1W |     0.309401 |   0.530300 |      13/44 |    70.5% |   0.020000
+    2W |     0.309285 |   0.530241 |      13/44 |    70.5% |   0.020000
+    3W |     0.309205 |   0.530289 |      12/44 |    72.7% |   0.020000
+    4W |     0.309194 |   0.530224 |      12/44 |    72.7% |   0.020000
+    5W |     0.309185 |   0.530161 |      12/44 |    72.7% |   0.020000
+    6W |     0.309171 |   0.529969 |      11/44 |    75.0% |   0.020000
+    7W |     0.309158 |   0.529854 |      11/44 |    75.0% |   0.020000
+    8W |     0.309151 |   0.529770 |      10/44 |    77.3% |   0.020000
+    9A |     0.259454 |   0.516219 |       9/44 |    79.5% |   0.020000
+   10A |     0.259079 |   0.512914 |      10/44 |    77.3% |   0.019048
+   11A |     0.248311 |   0.491739 |      10/44 |    77.3% |   0.018095
+   12A |     0.247157 |   0.490438 |      11/44 |    75.0% |   0.017143
+   13A |     0.243368 |   0.482894 |      11/44 |    75.0% |   0.016190
+   14A |     0.242861 |   0.482829 |      11/44 |    75.0% |   0.015238
+   15A |     0.242752 |   0.482010 |      12/44 |    72.7% |   0.014286
+   16A |     0.238744 |   0.471935 |      13/44 |    70.5% |   0.013333
+   17A |     0.235859 |   0.468530 |      13/44 |    70.5% |   0.012381
+   18A |     0.235613 |   0.468227 |      14/44 |    68.2% |   0.011429
+   19A |     0.234928 |   0.466833 |      14/44 |    68.2% |   0.010476
+   20A |     0.234658 |   0.466791 |      14/44 |    68.2% |   0.009524
+   21A |     0.234526 |   0.466786 |      14/44 |    68.2% |   0.008571
+   22A |     0.234397 |   0.466635 |      15/44 |    65.9% |   0.007619
+   23A |     0.233658 |   0.464740 |      17/44 |    61.4% |   0.006667
+   24A |     0.232165 |   0.461951 |      17/44 |    61.4% |   0.005714
+   25A |     0.231779 |   0.461911 |      17/44 |    61.4% |   0.004762
+   26A |     0.231611 |   0.461907 |      17/44 |    61.4% |   0.003810
+   27A |     0.231386 |   0.460466 |      21/44 |    52.3% |   0.002857
+   28A |     0.228825 |   0.454684 |      24/44 |    45.5% |   0.002000
+   29A |     0.227343 |   0.453278 |      24/44 |    45.5% |   0.002000
+
+[APG-DST] Done in 57.782s, 30 iters
+[APG-DST] MSE=0.4533, Nonzero=24/44, Sparsity=45.5%
+
+[Results] Saved to 'results/' directory
+
+==========================================================================================
+                                     MODEL COMPARISON                                     
+==========================================================================================
+Model        |   Test MSE |  Test RMSE |    Test R┬▓ |   Sparsity |  Nonzero |  Time(s)
+------------------------------------------------------------------------------------------
+Ridge        |     0.5555 |     0.7453 |     0.5761 |       0.0% |       44 |    0.335
+LASSO        |     0.5706 |     0.7554 |     0.5645 |      77.3% |       10 |    8.318
+APG-DST      |     0.5178 |     0.7196 |     0.6049 |      45.5% |       24 |   57.782
+==========================================================================================
+
+======================================================================
+                      DETAILED EVALUATION REPORT                      
+======================================================================
+
+--- Ridge ---
+  MSE:  0.5555   RMSE: 0.7453
+  MAE:  0.4987   R┬▓:   0.5761
+  Sparsity: 0.0% (44/44 features)
+  Residuals: mean=0.0068, std=0.7453
+  Top 5 features:
+    1. AveOccup^2: 0.7113
+    2. MedInc Longitude: -0.6275
+    3. Population AveOccup: 0.6058
+    4. MedInc: 0.5479
+    5. AveBedrms Population: 0.5184
+
+--- LASSO ---
+  MSE:  0.5706   RMSE: 0.7554
+  MAE:  0.5477   R┬▓:   0.5645
+  Sparsity: 77.3% (10/44 features)
+  Residuals: mean=0.0003, std=0.7554
+  Top 5 features:
+    1. MedInc Longitude: -0.5106
+    2. Longitude: -0.3689
+    3. Latitude^2: -0.3150
+    4. Latitude: -0.2323
+    5. MedInc HouseAge: 0.1860
+
+--- APG-DST ---
+  MSE:  0.5178   RMSE: 0.7196
+  MAE:  0.4992   R┬▓:   0.6049
+  Sparsity: 45.5% (24/44 features)
+  Residuals: mean=0.0070, std=0.7195
+  Top 5 features:
+    1. AveOccup: -1.4100
+    2. AveOccup^2: 1.0374
+    3. Longitude: -0.7907
+    4. Latitude: -0.7873
+    5. MedInc Longitude: -0.7629
+
+[Evaluation] Full report saved to 'results/evaluation_report.json'
+
+======================================================================
+                      GENERATING VISUALIZATIONS                       
+======================================================================
+[Plot] Saved convergence.png
+[Plot] Saved sparsity_evolution.png
+[Plot] Saved lambda_adaptation.png
+[Plot] Saved coefficient_comparison.png
+[Plot] Saved mse_comparison.png
+[Plot] Saved sparsity_vs_mse.png
+[Plot] Saved feature_importance.png
+[Plot] Saved residual_distributions.png
+
+[Plots] All visualizations saved to 'results\plots/'
+
+==================================================================
+  PIPELINE COMPLETE!
+==================================================================
+  Results saved to:
+    - results/comparison_summary.json
+    - results/evaluation_report.json
+    - results/plots/*.png
+
+  To launch the dashboard:
+    python dashboard/app.py
+==================================================================

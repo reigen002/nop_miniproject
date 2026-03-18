@@ -1,0 +1,428 @@
+{
+  "Ridge": {
+    "name": "Ridge",
+    "metrics": {
+      "mse": 0.5554717154828296,
+      "rmse": 0.7452997487473275,
+      "mae": 0.49872723928283874,
+      "r2": 0.5761081275339719,
+      "n_features": 44,
+      "n_nonzero": 44,
+      "n_zero": 0,
+      "sparsity_pct": 0.0
+    },
+    "top_features": [
+      {
+        "rank": 1,
+        "name": "AveOccup^2",
+        "coefficient": 0.7113438789679086,
+        "abs_coefficient": 0.7113438789679086
+      },
+      {
+        "rank": 2,
+        "name": "MedInc Longitude",
+        "coefficient": -0.6275000294905206,
+        "abs_coefficient": 0.6275000294905206
+      },
+      {
+        "rank": 3,
+        "name": "Population AveOccup",
+        "coefficient": 0.6058269067680753,
+        "abs_coefficient": 0.6058269067680753
+      },
+      {
+        "rank": 4,
+        "name": "MedInc",
+        "coefficient": 0.5478847060698726,
+        "abs_coefficient": 0.5478847060698726
+      },
+      {
+        "rank": 5,
+        "name": "AveBedrms Population",
+        "coefficient": 0.5184297443395822,
+        "abs_coefficient": 0.5184297443395822
+      },
+      {
+        "rank": 6,
+        "name": "Latitude",
+        "coefficient": -0.48856064611934397,
+        "abs_coefficient": 0.48856064611934397
+      },
+      {
+        "rank": 7,
+        "name": "Longitude",
+        "coefficient": -0.47684939111518077,
+        "abs_coefficient": 0.47684939111518077
+      },
+      {
+        "rank": 8,
+        "name": "AveOccup",
+        "coefficient": -0.4697058278856727,
+        "abs_coefficient": 0.4697058278856727
+      },
+      {
+        "rank": 9,
+        "name": "HouseAge AveOccup",
+        "coefficient": -0.4567750610109802,
+        "abs_coefficient": 0.4567750610109802
+      },
+      {
+        "rank": 10,
+        "name": "AveOccup Longitude",
+        "coefficient": 0.43084130686105704,
+        "abs_coefficient": 0.43084130686105704
+      },
+      {
+        "rank": 11,
+        "name": "MedInc^2",
+        "coefficient": -0.4306682907514059,
+        "abs_coefficient": 0.4306682907514059
+      },
+      {
+        "rank": 12,
+        "name": "Population",
+        "coefficient": -0.40714296753562373,
+        "abs_coefficient": 0.40714296753562373
+      },
+      {
+        "rank": 13,
+        "name": "MedInc AveRooms",
+        "coefficient": 0.39549985321614933,
+        "abs_coefficient": 0.39549985321614933
+      },
+      {
+        "rank": 14,
+        "name": "Longitude^2",
+        "coefficient": 0.3852236927386519,
+        "abs_coefficient": 0.3852236927386519
+      },
+      {
+        "rank": 15,
+        "name": "HouseAge Latitude",
+        "coefficient": -0.3570593764915364,
+        "abs_coefficient": 0.3570593764915364
+      }
+    ],
+    "residual_stats": {
+      "mean": 0.006830672485537373,
+      "std": 0.7452684465320027,
+      "median": -0.09985508219886607,
+      "max_abs": 18.188306843636248,
+      "q25": -0.4247905856368812,
+      "q75": 0.2979879076030845
+    },
+    "train_time": 0.0630950927734375
+  },
+  "LASSO": {
+    "name": "LASSO",
+    "metrics": {
+      "mse": 0.5706327297891369,
+      "rmse": 0.7554023628432314,
+      "mae": 0.5477018071540083,
+      "r2": 0.5645384461916939,
+      "n_features": 44,
+      "n_nonzero": 10,
+      "n_zero": 34,
+      "sparsity_pct": 77.27272727272727
+    },
+    "top_features": [
+      {
+        "rank": 1,
+        "name": "MedInc Longitude",
+        "coefficient": -0.5105626445476255,
+        "abs_coefficient": 0.5105626445476255
+      },
+      {
+        "rank": 2,
+        "name": "Longitude",
+        "coefficient": -0.36885915882147835,
+        "abs_coefficient": 0.36885915882147835
+      },
+      {
+        "rank": 3,
+        "name": "Latitude^2",
+        "coefficient": -0.3150458587478362,
+        "abs_coefficient": 0.3150458587478362
+      },
+      {
+        "rank": 4,
+        "name": "Latitude",
+        "coefficient": -0.23233623639842763,
+        "abs_coefficient": 0.23233623639842763
+      },
+      {
+        "rank": 5,
+        "name": "MedInc HouseAge",
+        "coefficient": 0.18595638702846695,
+        "abs_coefficient": 0.18595638702846695
+      },
+      {
+        "rank": 6,
+        "name": "MedInc AveBedrms",
+        "coefficient": 0.12344748253496901,
+        "abs_coefficient": 0.12344748253496901
+      },
+      {
+        "rank": 7,
+        "name": "Longitude^2",
+        "coefficient": 0.12278211640538483,
+        "abs_coefficient": 0.12278211640538483
+      },
+      {
+        "rank": 8,
+        "name": "AveRooms Latitude",
+        "coefficient": -0.04297462626930867,
+        "abs_coefficient": 0.04297462626930867
+      },
+      {
+        "rank": 9,
+        "name": "HouseAge^2",
+        "coefficient": 0.01731967210707696,
+        "abs_coefficient": 0.01731967210707696
+      },
+      {
+        "rank": 10,
+        "name": "AveOccup",
+        "coefficient": -0.004667890403571862,
+        "abs_coefficient": 0.004667890403571862
+      }
+    ],
+    "residual_stats": {
+      "mean": 0.00025466263654379983,
+      "std": 0.7554023199170614,
+      "median": -0.15303245972039348,
+      "max_abs": 5.594378506336479,
+      "q25": -0.4796678209759988,
+      "q75": 0.3024144362807971
+    },
+    "train_time": 2.6355960369110107
+  },
+  "ElasticNet": {
+    "name": "ElasticNet",
+    "metrics": {
+      "mse": 0.5469352093774779,
+      "rmse": 0.7395506807362683,
+      "mae": 0.49753813515869677,
+      "r2": 0.5826225106365749,
+      "n_features": 44,
+      "n_nonzero": 43,
+      "n_zero": 1,
+      "sparsity_pct": 2.272727272727273
+    },
+    "top_features": [
+      {
+        "rank": 1,
+        "name": "MedInc Longitude",
+        "coefficient": -0.875364615311928,
+        "abs_coefficient": 0.875364615311928
+      },
+      {
+        "rank": 2,
+        "name": "Population AveOccup",
+        "coefficient": 0.701553972512605,
+        "abs_coefficient": 0.701553972512605
+      },
+      {
+        "rank": 3,
+        "name": "AveOccup^2",
+        "coefficient": 0.6739016505912249,
+        "abs_coefficient": 0.6739016505912249
+      },
+      {
+        "rank": 4,
+        "name": "AveBedrms Population",
+        "coefficient": 0.5976090628173885,
+        "abs_coefficient": 0.5976090628173885
+      },
+      {
+        "rank": 5,
+        "name": "MedInc Latitude",
+        "coefficient": -0.5927006411677322,
+        "abs_coefficient": 0.5927006411677322
+      },
+      {
+        "rank": 6,
+        "name": "AveOccup",
+        "coefficient": -0.5778512346243837,
+        "abs_coefficient": 0.5778512346243837
+      },
+      {
+        "rank": 7,
+        "name": "MedInc",
+        "coefficient": 0.5480776960782555,
+        "abs_coefficient": 0.5480776960782555
+      },
+      {
+        "rank": 8,
+        "name": "Latitude",
+        "coefficient": -0.5464030717493047,
+        "abs_coefficient": 0.5464030717493047
+      },
+      {
+        "rank": 9,
+        "name": "Longitude",
+        "coefficient": -0.5411844697810881,
+        "abs_coefficient": 0.5411844697810881
+      },
+      {
+        "rank": 10,
+        "name": "HouseAge AveOccup",
+        "coefficient": -0.523879503394628,
+        "abs_coefficient": 0.523879503394628
+      },
+      {
+        "rank": 11,
+        "name": "Population",
+        "coefficient": -0.5214582315762222,
+        "abs_coefficient": 0.5214582315762222
+      },
+      {
+        "rank": 12,
+        "name": "AveOccup Longitude",
+        "coefficient": 0.5091954351440675,
+        "abs_coefficient": 0.5091954351440675
+      },
+      {
+        "rank": 13,
+        "name": "MedInc^2",
+        "coefficient": -0.4552324892916559,
+        "abs_coefficient": 0.4552324892916559
+      },
+      {
+        "rank": 14,
+        "name": "Latitude Longitude",
+        "coefficient": 0.44922547541943,
+        "abs_coefficient": 0.44922547541943
+      },
+      {
+        "rank": 15,
+        "name": "MedInc AveRooms",
+        "coefficient": 0.4282635827111643,
+        "abs_coefficient": 0.4282635827111643
+      }
+    ],
+    "residual_stats": {
+      "mean": 0.0062646573518119605,
+      "std": 0.7395241466279124,
+      "median": -0.09614434389054738,
+      "max_abs": 17.075287197314722,
+      "q25": -0.42256815899604394,
+      "q75": 0.2968159764087064
+    },
+    "train_time": 4.258813858032227
+  },
+  "APG-DST": {
+    "name": "APG-DST",
+    "metrics": {
+      "mse": 0.5346697863627154,
+      "rmse": 0.7312111776790037,
+      "mae": 0.5076804597032459,
+      "r2": 0.5919825068045099,
+      "n_features": 44,
+      "n_nonzero": 24,
+      "n_zero": 20,
+      "sparsity_pct": 45.45454545454545
+    },
+    "top_features": [
+      {
+        "rank": 1,
+        "name": "Latitude",
+        "coefficient": -2.9962562132713515,
+        "abs_coefficient": 2.9962562132713515
+      },
+      {
+        "rank": 2,
+        "name": "Latitude^2",
+        "coefficient": 2.2394401857027932,
+        "abs_coefficient": 2.2394401857027932
+      },
+      {
+        "rank": 3,
+        "name": "AveOccup",
+        "coefficient": -1.2964334399601427,
+        "abs_coefficient": 1.2964334399601427
+      },
+      {
+        "rank": 4,
+        "name": "AveBedrms Population",
+        "coefficient": 1.295816553586119,
+        "abs_coefficient": 1.295816553586119
+      },
+      {
+        "rank": 5,
+        "name": "Population",
+        "coefficient": -1.213844567426082,
+        "abs_coefficient": 1.213844567426082
+      },
+      {
+        "rank": 6,
+        "name": "MedInc Longitude",
+        "coefficient": -0.8730564728221809,
+        "abs_coefficient": 0.8730564728221809
+      },
+      {
+        "rank": 7,
+        "name": "AveOccup^2",
+        "coefficient": 0.8447404792169007,
+        "abs_coefficient": 0.8447404792169007
+      },
+      {
+        "rank": 8,
+        "name": "Longitude",
+        "coefficient": -0.8249344420634571,
+        "abs_coefficient": 0.8249344420634571
+      },
+      {
+        "rank": 9,
+        "name": "AveRooms Population",
+        "coefficient": -0.8161939619055854,
+        "abs_coefficient": 0.8161939619055854
+      },
+      {
+        "rank": 10,
+        "name": "HouseAge Latitude",
+        "coefficient": -0.7209406165054476,
+        "abs_coefficient": 0.7209406165054476
+      },
+      {
+        "rank": 11,
+        "name": "MedInc AveRooms",
+        "coefficient": 0.669500757122554,
+        "abs_coefficient": 0.669500757122554
+      },
+      {
+        "rank": 12,
+        "name": "MedInc^2",
+        "coefficient": -0.6225673324563434,
+        "abs_coefficient": 0.6225673324563434
+      },
+      {
+        "rank": 13,
+        "name": "HouseAge AveBedrms",
+        "coefficient": 0.6020762500899141,
+        "abs_coefficient": 0.6020762500899141
+      },
+      {
+        "rank": 14,
+        "name": "MedInc Population",
+        "coefficient": 0.5821157594035731,
+        "abs_coefficient": 0.5821157594035731
+      },
+      {
+        "rank": 15,
+        "name": "MedInc HouseAge",
+        "coefficient": 0.5034875983558856,
+        "abs_coefficient": 0.5034875983558856
+      }
+    ],
+    "residual_stats": {
+      "mean": 0.0031866604128392324,
+      "std": 0.731204233821255,
+      "median": -0.08715908825120755,
+      "max_abs": 10.69232881723756,
+      "q25": -0.43427797757934516,
+      "q75": 0.31517262125738843
+    },
+    "train_time": 11.48914098739624
+  }
+}

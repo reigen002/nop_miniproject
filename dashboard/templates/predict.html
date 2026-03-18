@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict — APG-DST Analytics Dashboard</title>
+    <meta name="description"
+        content="Real estate price prediction using Ridge, LASSO, and APG-DST models on California Housing data.">
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #1f1f35;
+            --accent-green: #00e676;
+            --accent-blue: #2979ff;
+            --accent-purple: #7c4dff;
+            --accent-red: #ff5252;
+            --accent-orange: #ffab40;
+            --accent-cyan: #00e5ff;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --text-bright: #ffffff;
+            --border: #2a2a4a;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+            --gradient-3: linear-gradient(135deg, #7c4dff 0%, #448aff 100%);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        nav {
+            background: linear-gradient(180deg, rgba(26, 26, 46, 0.98) 0%, rgba(15, 15, 26, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Form Styles --- */
+        .predict-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-header .icon {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .form-header .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group .unit-label {
+            font-size: 0.72rem;
+            font-weight: 400;
+            color: var(--accent-purple);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-left: 0.3rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            color: var(--text-bright);
+            font-family: inherit;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-purple);
+            background: rgba(124, 77, 255, 0.06);
+            box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.15);
+        }
+
+        .form-group input:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn-predict {
+            background: var(--gradient-3);
+            color: var(--text-bright);
+            border: none;
+            border-radius: 12px;
+            padding: 0.9rem 3rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(124, 77, 255, 0.45);
+        }
+
+        .btn-predict:active {
+            transform: translateY(0);
+        }
+
+        /* --- Error Alert --- */
+        .error-alert {
+            background: rgba(255, 82, 82, 0.1);
+            border: 1px solid rgba(255, 82, 82, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-red);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* --- Results Section --- */
+        .results-section {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+
+        .result-card.ridge::before {
+            background: var(--accent-blue);
+        }
+
+        .result-card.lasso::before {
+            background: var(--accent-red);
+        }
+
+        .result-card.apg::before {
+            background: var(--accent-green);
+        }
+
+        .result-card.best {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.12);
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .result-card .model-name {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .result-card .price {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            margin-bottom: 0.15rem;
+        }
+
+        .result-card .price-unit {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .badge-best {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
+        }
+
+        .badge-blue {
+            background: rgba(41, 121, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .badge-red {
+            background: rgba(255, 82, 82, 0.15);
+            color: var(--accent-red);
+        }
+
+        .badge-green {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
+        }
+
+        /* --- Visual Comparison --- */
+        .comparison-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 1.2rem;
+        }
+
+        .bar-item {
+            margin-bottom: 1rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .bar-label .name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .bar-label .val {
+            color: var(--text-bright);
+            font-weight: 700;
+        }
+
+        .bar-track {
+            height: 28px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            padding-left: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            min-width: 40px;
+        }
+
+        .bar-fill.ridge {
+            background: linear-gradient(90deg, #2979ff, #448aff);
+        }
+
+        .bar-fill.lasso {
+            background: linear-gradient(90deg, #ff5252, #ff8a80);
+        }
+
+        .bar-fill.apg {
+            background: linear-gradient(90deg, #00e676, #69f0ae);
+        }
+
+        /* --- Input Summary --- */
+        .input-summary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .input-summary h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 1rem;
+        }
+
+        .input-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .chip {
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.25);
+            border-radius: 20px;
+            padding: 0.35rem 0.9rem;
+            font-size: 0.82rem;
+        }
+
+        .chip .chip-name {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .chip .chip-val {
+            color: var(--text-bright);
+            margin-left: 0.3rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav .nav-links {
+                gap: 0;
+            }
+
+            nav a {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">APG-DST Analytics Dashboard</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/convergence">Convergence</a>
+                <a href="/features">Features</a>
+                <a href="/comparison">Comparison</a>
+                <a href="/predict" class="active">Predict</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Real Estate Price Predictor</h1>
+            <p>Enter housing features below and get instant price predictions from all three trained models</p>
+        </div>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- Prediction Form -->
+        <form method="POST" action="/predict" class="predict-form" id="predict-form">
+            <div class="form-header">
+                <div class="icon">🌇</div>
+                <div>
+                    <h2>Property Features</h2>
+                    <div class="subtitle">California Housing Dataset — enter the 8 features for your property</div>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for feat in feature_names %}
+                {% set info = feature_info[feat] %}
+                <div class="form-group">
+                    <label for="{{ feat }}">
+                        {{ info.label }}
+                        <span class="unit-label">{{ info.unit }}</span>
+                    </label>
+                    <input type="number" id="{{ feat }}" name="{{ feat }}" placeholder="{{ info.placeholder }}"
+                        step="{{ info.step }}" min="{{ info.min }}" max="{{ info.max }}"
+                        value="{{ input_values.get(feat, '') }}" required>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="submit-row">
+                <button type="submit" class="btn-predict" id="btn-predict">
+                    Predict Price
+                </button>
+            </div>
+        </form>
+
+        {% if predictions %}
+        <!-- Results Section -->
+        <div class="results-section">
+            <h2 class="section-title">Prediction Results</h2>
+
+            {% set best_model = predictions | dictsort(by='value', reverse=true) | first %}
+
+            <div class="results-grid">
+                {% for model, price in predictions.items() %}
+                <div
+                    class="result-card {{ 'ridge' if model == 'Ridge' else ('lasso' if model == 'LASSO' else 'apg') }} {{ 'best' if model == best_model[0] else '' }}">
+                    <div class="model-name">{{ model }}</div>
+                    <div class="price">${{ "%.2f"|format(price * 100000) | replace('.00', '') }}</div>
+                    <div class="price-unit">{{ "%.4f"|format(price) }} × $100,000</div>
+                    {% if model == best_model[0] %}
+                    <span class="badge badge-best">★ Highest Prediction</span>
+                    {% else %}
+                    <span
+                        class="badge {{ 'badge-blue' if model == 'Ridge' else ('badge-red' if model == 'LASSO' else 'badge-green') }}">{{
+                        model }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Visual Comparison Bars -->
+            <div class="comparison-card">
+                <h3>Model Comparison</h3>
+                {% set max_price = predictions.values() | map('abs') | max %}
+                {% for model, price in predictions.items() %}
+                <div class="bar-item">
+                    <div class="bar-label">
+                        <span class="name">{{ model }}</span>
+                        <span class="val">${{ "%.0f"|format(price * 100000) }}</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill {{ 'ridge' if model == 'Ridge' else ('lasso' if model == 'LASSO' else 'apg') }}"
+                            style="width: {{ (price / max_price * 100) | abs }}%">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Input Summary -->
+            <div class="input-summary">
+                <h3>Input Values Used</h3>
+                <div class="input-chips">
+                    {% for feat, val in input_values.items() %}
+                    <div class="chip">
+                        <span class="chip-name">{{ feat }}:</span>
+                        <span class="chip-val">{{ val }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <footer style="margin-top: auto; font-size:0.8em; text-align: center;">
+            Jain (Deemed-to-be University) | CSE-AI&DE | Numerical Optimization Mini Project
+        </footer>
+    </div>
+</body>
+
+</html>

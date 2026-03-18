@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convergence Analysis — APG-DST Analytics Dashboard </title>
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --border: #2a2a4a;
+            --accent-green: #00e676;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --text-bright: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        nav {
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            color: var(--text-bright);
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">APG-DST Analytics Dashboard</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/convergence" class="active">Convergence</a>
+                <a href="/features">Features</a>
+                <a href="/comparison">Comparison</a>
+                <a href="/predict">Predict</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Convergence Analysis</h1>
+        <p class="subtitle">Tracking the optimization trajectory of the Adaptive Proximal Gradient algorithm</p>
+
+        <div class="plot-grid">
+            <div class="card">
+                <h3>Objective & MSE Convergence</h3>
+                <p>Composite objective value and MSE over iterations, showing convergence behavior.</p>
+                <img src="/plots/convergence.png" alt="Convergence Plots"
+                    onerror="this.parentElement.innerHTML+='<p style=color:#ffab40>Plot not found. Run main.py first.</p>'">
+            </div>
+            <div class="card">
+                <h3>Adaptive λ Evolution</h3>
+                <p>How the dynamic soft-thresholding parameter adapts over iterations.</p>
+                <img src="/plots/lambda_adaptation.png" alt="Lambda Adaptation"
+                    onerror="this.parentElement.innerHTML+='<p style=color:#ffab40>Plot not found.</p>'">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Sparsity Evolution</h3>
+            <p>Feature sparsity percentage and active feature count during optimization — demonstrating aggressive early
+                pruning followed by stabilization.</p>
+            <img src="/plots/sparsity_evolution.png" alt="Sparsity Evolution"
+                onerror="this.parentElement.innerHTML+='<p style=color:#ffab40>Plot not found.</p>'">
+        </div>
+
+        <div class="card">
+            <h3>Mathematical Formulation</h3>
+            <p style="color: var(--text-primary); line-height: 1.8; margin-top: 0.5rem;">
+                The APG-DST optimizer minimizes: <strong>f(β) + Σ λ<sub>j</sub><sup>(k)</sup>
+                    |β<sub>j</sub>|</strong><br>
+                where the adaptive thresholds are: <strong>λ<sub>j</sub><sup>(k)</sup> = λ₀ ·
+                    w<sub>j</sub><sup>(k)</sup> · schedule(k)</strong><br>
+                with weights: <strong>w<sub>j</sub><sup>(k)</sup> = 1 / (|β<sub>j</sub>| + ε)<sup>γ</sup></strong>
+                (subdifferential-informed)<br>
+                and schedule: <strong>schedule(k) = max(τ<sub>min</sub>, 1 - k/K)</strong> (iteration-dependent decay)
+            </p>
+        </div>
+        <footer style="margin-top: auto; font-size:0.8em; text-align: center;">
+            Jain (Deemed-to-be University) | CSE-AI&DE | Numerical Optimization Mini Project
+        </footer>
+    </div>
+</body>
+
+</html>

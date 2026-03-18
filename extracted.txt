@@ -1,0 +1,223 @@
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+ 
+Numerical  Optimization:  Project  & Assignment  Guidelines  
+Optimization  Themes:  Refer  Appendix  section  
+ 
+General  Instructions  for All Teams  
+One Theme,  Two  Deliverables:   
+• Team  Formation:  Students  must  form  a team  consisting  of a minimum  of 3 and a 
+maximum  of 5 members . 
+• Theme  Selection:  Each  team  must  select  exactly  one theme  from  the 10 options  
+provided  below.  
+• Project  + Assignment  Link:  The chosen  theme  will serve  as the foundation  for both 
+your Mini  Project  (design,  development,  and deployment)  and your Assignment  
+(technical  documentation).  
+• Depth  of Work:  By focusing  on a single  theme,  the team  will deeply  explore  the 
+mathematical  formulations , implement  the optimization  algorithm , analyze  results,  
+and formally  document  the findings  in the final report.  
+Part  A: Project  (20 Marks)  
+ 
+Objective:  Design, Develop, and Deploy  
+For your chosen theme, your team is expected to build a fully functional machine learning 
+pipeline that implements the specific numerical optimization technique outlined in the theme's 
+abstract.  
+Project  Requirements:  
+• Design:  Formulate  the mathematical  objective  function  and the specific  optimization  
+strategy  (e.g.,  adaptive  gradient  methods,  proximal  methods,  Augmented  Lagrangians)  
+required  by your theme.  
+• Develop:  Implement  the custom  optimizer  and train your model  on the dataset  
+explicitly  specified  in your theme's  abstract  (e.g.,  CIFAR -10, TalkingData,  Chest  X-
+Ray).  Compare  the performance  of your custom  implementation  against  standard  
+baselines.  
+
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+• Deploy/Execute:  Ensure  your code  is modular,  reproducible,  and executable.  You 
+must  evaluate  the performance  of your algorithm  and assess  its suitability  for the 
+specific  machine  learning  problem.  
+ 
+Part  B: Assignment  (10 Marks)  
+ 
+Objective:  Draft a technical documentation  (6-12 Pages)  
+Based strictly  on the work you completed in Part A , draft a comprehensive technical 
+documentation  detailing your methodology, mathematical formulations, and experimental 
+results.  
+Assignment  Requirements:  
+• Format:  The submission must be a properly formatted 6–12-page  document.  
+• Content:  Your  article  must  translate  your practical  implementation  into a formal  
+report.  It should  clearly  discuss  the strengths  and limitations  of the optimization  
+technique  you applied.  
+• Analysis:  Include  empirical  evidence  (graphs,  tables,  convergence  rates)  proving  how 
+your applied  optimization  technique  improved  the performance  of the machine  learning  
+model.  Discuss  the specific  challenges  addressed  in your theme,  such as vanishing  
+gradients,  high-dimensional  feature  selection,  or communication  bottlenecks  in 
+distributed  networks.  
+• Plagiarism  Policy:  A plagiarism  report  must  be submitted  along  with the final 
+document.  The similarity  index  must  be less than 15%,  excluding  references,  equations,  
+and standard  technical  terminology.  Submissions  exceeding  this threshold  will not be 
+evaluated.  
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+ 
+Appendix:  Optimization  Theme s 
+Select  one of the following  themes  for your unified  Project  and Assignment.  
+Domain 1: Unconstrained Optimization & Adaptive Gradient Methods  
+Theme -1: Preconditioned  Gradient  Variance  Tracking  for Imbalanced  Click -Through  
+Rates  
+Existing  adaptive  gradient  methods  like Adagrad  often  suffer  from  rapid  learning  rate decay,  
+prematurely  halting  convergence  in highly  sparse,  imbalanced  datasets.  You should  propose  
+a novel,  variance -stabilized  variant  of RMSProp  that utilizes  an dynamic  exponential  
+moving  average  to precondition  the gradient  variance.  By mathematically  bounding  the 
+historical  gradient  accumulation,  your optimizer  should  prevent  aggressive  decay  while  
+maintaining  sensitivity  to rare features.  Evaluate  your algorithm  by optimizing  a deep  neural  
+network  on the TalkingData  AdTracking  Fraud  Detection  or equivalent  dataset  of your interest . 
+Experimental  results  should  demonstrate  that your variance -tracked  RMSProp  achieves  a faster  
+convergence  rate of 𝒪(1/√𝑡) and significantly  improves  the Area  Under  the Precision -Recall  
+Curve  (AUPRC)  compared  to standard  Adagrad  and baseline  RMSProp  formulations.  
+ 
+Theme -2: Lipschitz -Bounded  Momentum  Acceleration  in Medical  Image  Classification  
+Optimiz e deep  neural  networks  for high-resolution  medical  imaging  frequently  encounters  
+severe  vanishing  gradient  problems  and convergence  to suboptimal  local  minima.  While  
+Nesterov's  accelerated  gradient  method  provides  theoretical  guarantees  for convex  functions , 
+its application  in non-convex  neural  landscapes  requires  rigorous  tuning.  Introduce  a 
+dynamically  bounded  momentum  acceleration  technique  governed  by the local  Lipschitz  
+continuity  of the loss function.  By utilizing  the Hessian's  spectral  norm  to adjust  the 
+momentum  coefficient  dynamically,  mitigate  overshooting  in steep  ravines  of the cross -
+entropy  loss landscape.  Deploy  on the Chest  X-Ray (Pneumonia)  dataset  or equivalent  dataset  
+of your interest , such that your algorithm  outpaces  traditional  Heavy -ball methods,  reducing  
+training  epochs  by 30% while  improving  diagnostic  recall  through  better  convergence  in flat 
+minima  regions.  
+ 
+ 
+
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+Domain 2: Proximal Methods & Sparse Optimization  
+Theme -3: Dynamic  Soft-Thresholding  for Feature  Selection  in High -Dimensional  
+Regression  
+Feature  selection  in real estate  pricing  models  is typically  handled  via static  𝑙1-regularization  
+(LASSO),  which  struggles  with highly  correlated  multivariate  features.  Propose  a 
+dynamically  adaptive  proximal  gradient  method  where  the soft-thresholding  operator  is 
+scaled  iteratively  based  on the subdifferential  of the 𝑳𝟏 penalty  at the current  iterate.  This 
+mathematical  formulation  allows  for aggressive  pruning  of irrelevant  features  early  in training  
+while  fine-tuning  highly  correlated  coefficients  in later stages.  Appl y it to the House  Prices:  
+Advanced  Regression  Techniques  dataset  or equivalent  dataset  of your interest.  Your adaptive  
+LASSO  regression  model  must  achieve  superior  sparsity  without  sacrificing  predictive  
+accuracy,  outperforming  standard  Ridge  and LASSO  implementations  in both Mean  Squared  
+Error  and computational  efficiency.  
+ 
+ 
+ 
+Theme -4: Subgradient -Optimized  Total  Variation  Denoising  for Neural  Pre-processing  
+Deep  learning  models  trained  on raw radiographic  images  often  overfit  to high-frequency  
+sensor  noise.  While  Total  Variation  (TV)  denoising  is a proven  mathematical  tool for 
+smoothing  while  preserving  edges,  integrating  it as a trainable  layer  is challengin g due to its 
+non-differentiability.  Formulate  a novel  proximal  forward -backward  splitting  algorithm  
+that explicitly  computes  the subgradients  of the isotropic  TV penalty.  This should  allow  
+you to optimize  the denoising  hyperparameters  jointly  with a downst ream  classification  
+network.  Validat e it on the Chest  X-Ray dataset  or equivalent  dataset  of your interest.  Your 
+algorithm  must  effectively  remove  artifacts  while  preserving  pulmonary  opacities,  leading  to a 
+statistically  significant  increase  in the model's  robustness  against  adversarial  perturbations  
+compared  to standard  baseline  models.  
+ 
+Domain 3: Constrained Optimization & Penalty Methods  
+Theme -5: Active -Set Identification  via KKT  Multipliers  for Fraud  Detection  SVMs  
+Training  Support  Vector  Machines  (SVMs)  on massive,  highly  imbalanced  transaction  data is 
+computationally  prohibitive  due to the density  of the quadratic  programming  (QP)  formulation.  
+
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+Introduce  an accelerated  gradient  descent  optimizer  that dynamically  filters  the training  
+set by mathematically  enforcing  Karush -Kuhn -Tucker  (KKT)  conditions.  By tracking  the 
+magnitude  of Lagrange  multipliers  , your algorithm  must  identif y and isolate  the active  set 
+(support  vectors)  early  in the optimization  trajectory,  aggressively  pruning  non-binding  
+inequality  constraints.  Evaluate  it on the Credit  Card  Fraud  Detection  dataset  or equivalent  
+dataset  of your interest.  Your KKT -guided  optimizer  must  reduce  the time complexity  of 
+margin  constraint  optimization  by 40% while  maintaining  the exact  decision  boundary  and high 
+F1-score  of a fully  trained  traditional  SVM.  
+ 
+Theme -6: Primal -Dual  Updating  Schemes  via Augmented  Lagrangians  for Image  
+Classification  
+Enforcing  structural  constraints  (e.g.,  sparsity  or fairness)  within  deep  neural  network  training  
+typically  relies  on fragile  penalty  functions  that require  exhaustive  hyperparameter  tuning.  
+Propose  a novel  constrained  optimization  framework  utilizing  the Augmented  
+Lagrangian  method.  Your algorithmic  contribution  should  be an adaptive  Dual  ascent  
+convergence  scheme  that strictly  controls  the penalty  parameter  updates  based  on the ratio of 
+primal  to dual residual  norms.  This ensures  stable  convergence  even  in non-convex  mini-batch  
+settings.  Applied  either  to a constrained  image  classification  task on the CIFAR -10 dataset  or 
+equivalent  dataset  of your interest , your method  must  achieve  strict  constraint  satisfaction  with 
+negligible  degradation  to standard  cross -entropy  accuracy,  signific antly  outperforming  naive  
+penalty  function  methods.  
+ 
+Domain 4: Second -Order & Nonlinear Optimization  
+Theme -7: Secant -Approximated  Inverse  Hessians  for Hyperparameter  Optimization  
+Grid search  and random  search  for neural  network  hyperparameter  tuning  are vastly  inefficient,  
+ignoring  the curvature  of the validation  loss landscape.  Formulate  a novel  application  of the 
+Broyden–Fletcher–Goldfarb –Shanno  (BFGS)  algorithm  to continuously  optimize  
+continuous  hyperparameters  (e.g.,  learning  rate,  weight  decay).  By leveraging  the secant  
+equation  to build  a positive -definite  approximation  of the inverse  Hessian  matrix,  your 
+approach  must  take second -order  curvature  steps  in the hyperparameter  space without  
+explicitly  computing  second  derivatives.  Test on a regression  network  using  the House  Prices  
+dataset  or equivalent  dataset  of your interest.  Your quasi -Newton  hyperparameter  optimizer  
+
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+should  converge  to optimal  configurations  5x faster  than Bayesian  optimization  baselines,  
+proving  the viability  of BFGS  in meta -learning  environments.  
+ 
+Theme -8: Conjugate  Gradient -Backed  Hessian -Free  Optimization  for Deep  Vision  
+Models  
+First-order  stochastic  methods  dominate  deep  learning  but struggle  to navigate  pathological  
+curvature  in deep  architectures.  Hessian -free (HF)  optimization  offers  a second -order  
+alternative  but is bottlenecked  by the computational  cost of evaluating  the curvature  matrix.  
+Introduce  an optimized  HF algorithm  that employs  a truncated  conjugate  gradient  
+method  combined  with  Gauss -Newton  matrix -vector  products  to approximate  second -
+order  steps.  Your novelty  lies in a dynamically  scaled  damping  parameter  based  on the 
+Levenberg -Marquardt  heuristic,  preventing  divergent  steps  in highly  non-convex  regions.  
+Evaluate  it on the CIFAR -10 dataset  or equivalent  dataset  of your interest.  Your approach  must  
+bypass  saddle  points  more  effectively  than Adam,  demonstrating  superior  generalization  in 
+deeper,  non-residual  network  topologies.  
+ 
+Domain 5: Online Optimization, Bandits & Distributed AI  
+Theme -9: Logarithmic  Regret  Bounding  via UCB  in Collaborative  Filtering  
+Cold -start problems  in recommender  systems  inherently  require  balancing  the exploration  of 
+new user preferences  with the exploitation  of known  historical  data.  Reframe  collaborative  
+filtering  on the MovieLens  100K  dataset  or equivalent  dataset  of your  interest  as a Multi -
+armed  bandit  problem.  Your algorithmic  contribution  should  be an Upper  Confidence  Bound  
+(UCB)  optimizer  mapped  to an Online  Convex  Optimization  (OCO)  framework,  which  should  
+dynamically  adjust  to exploration  thresholds  based  on subgradient  bounds  of user-item 
+interaction  variance.  This mathematical  tool should  guarantee  logarithmic  regret  over time.  
+Experimental  validation  must  prove  your OCO -bandit  hybrid  reach ing higher  precision -at-k, 
+resulting  in an significantly  faster  than traditional  stochastic  gradient  descent  matrix  
+factorization  methods.  
+ 
+Theme -10: Asynchronous  ADMM  for Distributed  Fraud  Detection  Optimization  
+Training  robust  machine  learning  models  on globally  distributed,  high-velocity  click -stream  
+data poses  severe  communication  bottlenecks.  Propose  a novel  implementation  of the 
+
+ 
+JAIN DEEMED -TO-BE UNIVERSITY  |  Faculty of Engineering & Technology  
+Department of CSE - Artificial Intelligence and Machine Learning  
+Alternating  Direction  Method  of Multipliers  (ADMM)  tailored  for asynchronous  
+distributed  optimization.  By formulating  the global  loss as an Augmented  Lagrangian  
+consensus  problem,  local  nodes  compute  proximal  updates  independently,  while  a central  
+parameter  server  aggregating  the dual variables  handles  delayed  stragglers  via a decay -
+weighted  penalty  factor . Deploy  it on the TalkingData  AdTracking  dataset  or equivalent  dataset  
+of your interest  across  simulated  decentralized  nodes . Your asynchronous  ADMM  algorithm  
+reduces  communication  overhead  by 60% compared  to synchronous  Federated  Averaging  
+while  maintain ing parity  in predictive  ROC -AUC.  
+

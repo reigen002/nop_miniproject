@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Comparison — APG-DST Analytics Dashboard </title>
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --border: #2a2a4a;
+            --accent-green: #00e676;
+            --accent-blue: #2979ff;
+            --accent-red: #ff5252;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --text-bright: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        nav {
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            color: var(--text-bright);
+            margin-bottom: 0.5rem;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-green {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
+        }
+
+        .badge-blue {
+            background: rgba(41, 121, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .badge-red {
+            background: rgba(255, 82, 82, 0.15);
+            color: var(--accent-red);
+        }
+
+        .winner {
+            background: rgba(0, 230, 118, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">APG-DST Analytics Dashboard</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/convergence">Convergence</a>
+                <a href="/features">Features</a>
+                <a href="/comparison" class="active">Comparison</a>
+                <a href="/predict">Predict</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Model Comparison</h1>
+        <p class="subtitle">Side-by-side comparison: Ridge vs LASSO vs APG-DST</p>
+
+        {% if summary %}
+        <div class="card">
+            <h3>Performance Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Test MSE</th>
+                        <th>Test RMSE</th>
+                        <th>Test MAE</th>
+                        <th>R²</th>
+                        <th>Sparsity</th>
+                        <th>Nonzero</th>
+                        <th>Train Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model, s in summary.items() %}
+                    <tr {% if model=='APG-DST' %}class="winner" {% endif %}>
+                        <td>
+                            <span
+                                class="badge {% if model == 'APG-DST' %}badge-green{% elif model == 'LASSO' %}badge-red{% else %}badge-blue{% endif %}">
+                                {{ model }}
+                            </span>
+                        </td>
+                        <td>{{ "%.4f"|format(s.test_mse) }}</td>
+                        <td>{{ "%.4f"|format(s.test_rmse) }}</td>
+                        <td>{{ "%.4f"|format(s.test_mae) }}</td>
+                        <td>{{ "%.4f"|format(s.test_r2) }}</td>
+                        <td>{{ "%.1f"|format(s.sparsity_pct) }}%</td>
+                        <td>{{ s.n_nonzero }}</td>
+                        <td>{{ "%.3f"|format(s.train_time) }}s</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="plot-grid">
+            <div class="card">
+                <h3>MSE Comparison</h3>
+                <img src="/plots/mse_comparison.png" alt="MSE Comparison" onerror="this.style.display='none'">
+            </div>
+            <div class="card">
+                <h3>Sparsity vs. Accuracy</h3>
+                <img src="/plots/sparsity_vs_mse.png" alt="Sparsity vs MSE" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Residual Distributions</h3>
+            <img src="/plots/residual_distributions.png" alt="Residuals"
+                onerror="this.parentElement.innerHTML+='<p style=color:#ffab40>Plot not found.</p>'">
+        </div>
+
+        {% if eval_report %}
+        <div class="card">
+            <h3>Residual Statistics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Mean</th>
+                        <th>Std</th>
+                        <th>Median</th>
+                        <th>Max |Residual|</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model, r in eval_report.items() %}
+                    <tr>
+                        <td>{{ model }}</td>
+                        <td>{{ "%.4f"|format(r.residual_stats.mean) }}</td>
+                        <td>{{ "%.4f"|format(r.residual_stats.std) }}</td>
+                        <td>{{ "%.4f"|format(r.residual_stats.median) }}</td>
+                        <td>{{ "%.4f"|format(r.residual_stats.max_abs) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        <footer style="margin-top: auto; font-size:0.8em; text-align: center;">
+            Jain (Deemed-to-be University) | CSE-AI&DE | Numerical Optimization Mini Project
+        </footer>
+    </div>
+</body>
+
+</html>

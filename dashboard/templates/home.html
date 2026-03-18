@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APG-DST Analytics Dashboard — Theme 3 Dashboard</title>
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #1f1f35;
+            --accent-green: #00e676;
+            --accent-blue: #2979ff;
+            --accent-purple: #7c4dff;
+            --accent-red: #ff5252;
+            --accent-orange: #ffab40;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --text-bright: #ffffff;
+            --border: #2a2a4a;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        nav {
+            background: linear-gradient(180deg, rgba(26, 26, 46, 0.98) 0%, rgba(15, 15, 26, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+
+        .metric-card:nth-child(1)::before {
+            background: var(--accent-green);
+        }
+
+        .metric-card:nth-child(2)::before {
+            background: var(--accent-blue);
+        }
+
+        .metric-card:nth-child(3)::before {
+            background: var(--accent-purple);
+        }
+
+        .metric-card:nth-child(4)::before {
+            background: var(--accent-orange);
+        }
+
+        .metric-card:nth-child(5)::before {
+            background: var(--accent-red);
+        }
+
+        .metric-card:nth-child(6)::before {
+            background: var(--accent-green);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .metric-card .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .metric-card .subtext {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .plot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        td {
+            font-size: 0.95rem;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-green {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
+        }
+
+        .badge-blue {
+            background: rgba(41, 121, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .badge-red {
+            background: rgba(255, 82, 82, 0.15);
+            color: var(--accent-red);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .plot-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav .nav-links {
+                gap: 0;
+            }
+
+            nav a {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">APG-DST Analytics Dashboard</div>
+            <div class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/convergence">Convergence</a>
+                <a href="/features">Features</a>
+                <a href="/comparison">Comparison</a>
+                <a href="/predict">Predict</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Dynamic Soft-Thresholding for Feature Selection</h1>
+            <p>Adaptive Proximal Gradient with iterative subdifferential-based thresholding for high-dimensional
+                regression</p>
+        </div>
+
+        {% if summary %}
+        <div class="metrics-grid">
+            {% for model, s in summary.items() %}
+            <div class="metric-card">
+                <div class="label">{{ model }} — Test MSE</div>
+                <div class="value">{{ "%.4f"|format(s.test_mse) }}</div>
+                <div class="subtext">R² = {{ "%.4f"|format(s.test_r2) }}</div>
+            </div>
+            {% endfor %}
+            {% if summary.get('APG-DST') %}
+            <div class="metric-card">
+                <div class="label">APG-DST Sparsity</div>
+                <div class="value">{{ "%.1f"|format(summary['APG-DST'].sparsity_pct) }}%</div>
+                <div class="subtext">{{ summary['APG-DST'].n_nonzero }} active features</div>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="card">
+            <p style="text-align:center; color: var(--accent-orange);">
+                ⚠️ No results found. Run <code>python main.py</code> first to generate results.
+            </p>
+        </div>
+        {% endif %}
+
+        <h2 class="section-title">Model Comparison</h2>
+        {% if summary %}
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Test MSE</th>
+                        <th>Test RMSE</th>
+                        <th>R²</th>
+                        <th>Sparsity</th>
+                        <th>Features</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model, s in summary.items() %}
+                    <tr>
+                        <td>
+                            <span
+                                class="badge {% if model == 'APG-DST' %}badge-green{% elif model == 'LASSO' %}badge-red{% else %}badge-blue{% endif %}">
+                                {{ model }}
+                            </span>
+                        </td>
+                        <td>{{ "%.4f"|format(s.test_mse) }}</td>
+                        <td>{{ "%.4f"|format(s.test_rmse) }}</td>
+                        <td>{{ "%.4f"|format(s.test_r2) }}</td>
+                        <td>{{ "%.1f"|format(s.sparsity_pct) }}%</td>
+                        <td>{{ s.n_nonzero }}</td>
+                        <td>{{ "%.3f"|format(s.train_time) }}s</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <h2 class="section-title">Visualizations</h2>
+        <div class="plot-grid">
+            <div class="card">
+                <h3>MSE Comparison</h3>
+                <img src="/plots/mse_comparison.png" alt="MSE Comparison" onerror="this.style.display='none'">
+            </div>
+            <div class="card">
+                <h3>Sparsity vs. Accuracy Trade-off</h3>
+                <img src="/plots/sparsity_vs_mse.png" alt="Sparsity vs MSE" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <footer style="margin-top: auto; font-size:0.8em; text-align: center;">
+            Jain (Deemed-to-be University) | CSE-AI&DE | Numerical Optimization Mini Project
+        </footer>
+    </div>
+</body>
+
+</html>
